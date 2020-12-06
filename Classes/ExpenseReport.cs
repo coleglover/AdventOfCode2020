@@ -12,7 +12,6 @@ namespace AoC._2020
         {
             string[] expenseReport = System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day01\Day01.Input.txt");
             return expenseReport.Select(int.Parse).ToArray();
-
         }
 
 
