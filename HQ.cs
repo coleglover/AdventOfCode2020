@@ -7,9 +7,7 @@ namespace AoC._2020
         static void Main()
         {
             ExpenseReport.NumberCruncher(ExpenseReport.ImportData());
-
             Console.ReadLine();
-
         }
     }
 }
