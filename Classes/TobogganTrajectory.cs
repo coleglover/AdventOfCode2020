@@ -12,19 +12,14 @@ namespace AoC._2020
         public TobogganTrajectory(int y, int x) 
         {
             this.Y = y;
-            this.X = x;
-            
-            
-            // create constructor which contains rise / run arrays for each slope
-            // send this to the Toboggan Run and generate tree counts
-        
+            this.X = x;        
         }
+        
         public static string[] ImportData()
         {
             string[] obstacles = System.IO.File.ReadAllLines(@"#\Day03\Day03.Input.txt");
 
             return obstacles;
-
         }
 
         //< Part 1
