@@ -6,13 +6,13 @@ namespace AoC._2020
 {
     class TobogganTrajectory
     {
-        public int Run { get; private set; }
-        public int Rise { get; private set; }
+        public int X { get; private set; }
+        public int Y { get; private set; }
 
-        public TobogganTrajectory(int rise, int run) 
+        public TobogganTrajectory(int y, int x) 
         {
-            this.Rise = rise;
-            this.Run = run;
+            this.Y = y;
+            this.X = x;
             
             
             // create constructor which contains rise / run arrays for each slope
@@ -35,9 +35,9 @@ namespace AoC._2020
             long treeCount = 0;
             int xCounter = 0;
 
-            for (int i = 0; i < obstacles.Length; i += slope.Rise)
+            for (int i = 0; i < obstacles.Length; i += slope.Y)
             {
-                int xCord = xCounter * slope.Run;
+                int xCord = xCounter * slope.X;
 
                 string xPlane = obstacles[i];
 
@@ -59,7 +59,6 @@ namespace AoC._2020
 
 
         //< Part 2
-
         public static long GetSlopeProducts() 
         {
             int[] rise = { 1, 1, 1, 1, 2 };
