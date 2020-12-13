@@ -45,19 +45,13 @@ namespace AoC._2020
 
                 if (xPoints[xCord % xPlane.Length] == '#')
                 {
-                    xPoints[xCord % xPlane.Length] = 'X';
                     treeCount++;
                 }
-                else if (xPoints[xCord % xPlane.Length] != 'X')
-                {
-                    xPoints[xCord % xPlane.Length] = 'O';
-                }
 
-                //Console.WriteLine(xPoints);
                 xCounter++;
             }
 
-            Console.WriteLine($"\nSlope: {slope.Rise}/{slope.Run} /// Tree impacts: {treeCount} /// Line count:{xCounter}\n");
+            //Console.WriteLine($"\nSlope: {slope.Rise}/{slope.Run} /// Tree impacts: {treeCount} /// Line count:{xCounter}\n");
 
             return treeCount;
 
