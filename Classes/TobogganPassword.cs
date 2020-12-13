@@ -35,7 +35,7 @@ namespace AoC._2020
 
         public static string[] ImportData()
         {
-            string[] tobogganPasswords = System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day02\Day02.Input.txt");
+            string[] tobogganPasswords = System.IO.File.ReadAllLines(@"#\Day02\Day02.Input.txt");
 
             return tobogganPasswords;
 
