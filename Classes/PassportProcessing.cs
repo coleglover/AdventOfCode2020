@@ -43,20 +43,15 @@ namespace AoC._2020
             int containsCount = 0;
 
             //< change this to while loop(?)
-            foreach(string criteria in essentialCriteria)
+            foreach (string criteria in essentialCriteria)
             {
-                if (passport.Contains(criteria))
+                if (!passport.Contains(criteria))
                 {
-                    containsCount++;
+                    return false;
                 }
             }
 
-            if (containsCount >= 7) 
-            {
-                return true;
-            }
-
-            return false;         
+            return true;       
         }
     }
 }
