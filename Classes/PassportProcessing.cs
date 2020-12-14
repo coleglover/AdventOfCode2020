@@ -39,10 +39,7 @@ namespace AoC._2020
         public static bool IsValid(string passport) 
         {
             string[] essentialCriteria = { "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid" };
-            
-            int containsCount = 0;
 
-            //< change this to while loop(?)
             foreach (string criteria in essentialCriteria)
             {
                 if (!passport.Contains(criteria))
@@ -50,7 +47,6 @@ namespace AoC._2020
                     return false;
                 }
             }
-
             return true;       
         }
     }
