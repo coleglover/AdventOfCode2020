@@ -7,13 +7,20 @@ namespace AoC._2020
         static void Main()
         {
             //< Day 01
-            ExpenseReport.NumberCruncher(ExpenseReport.ImportData());
+            //ExpenseReport.NumberCruncher(ExpenseReport.ImportData());
 
             //< Day 02
-            var possibleSledPasswords = TobogganPassword.GetValidPasswords();
-            Console.WriteLine($"\nTotal possible Sled passwords: {possibleSledPasswords[0]}");
-            Console.WriteLine($"Total possible Toboggan passwords: {possibleSledPasswords[1]}");
+            //TobogganPassword.GetValidPasswords();
+
+
+            //< Day 03 
+            //TobogganTrajectory.GetSlopeProducts();
+
+            //< Day 04
+            PassportProcessing.PassportCounter(PassportProcessing.ImportData());
             Console.ReadLine();
+            
+            //< Day 05
         }
     }
 }
