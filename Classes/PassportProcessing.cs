@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -13,7 +11,7 @@ namespace AoC._2020
         public int IssueYear { get; private set; }
         public int ExpirationYear { get; private set; }
         public string Height { get; private set; }
-        public char[] HairColour { get; private set; }
+        public string HairColour { get; private set; }
         public string EyeColour { get; private set; }
         public string PassportID { get; private set; }
 
@@ -24,20 +22,24 @@ namespace AoC._2020
             this.IssueYear = Int32.Parse(passport.Substring(passport.IndexOf("iyr:") + 4, 4));
             this.ExpirationYear = Int32.Parse(passport.Substring(passport.IndexOf("eyr:") + 4, 4));
 
-            this.Height = passport.Substring(passport.IndexOf("hgt:") + 4, 4); //< this will require tailoring
-            this.HairColour = passport.Substring(passport.IndexOf("hcl:#") + 4, 6).ToCharArray();
+            this.Height = passport.Substring(passport.IndexOf("hgt:") + 4, 4);
+            this.HairColour = passport.Substring(passport.IndexOf("hcl:#") + 4, 7);
             this.EyeColour = passport.Substring(passport.IndexOf("ecl:") + 4, 3);
 
-            //< make exception to catch for #
             this.PassportID = passport.Substring(passport.IndexOf("pid:") + 4, 1);
 
             if (this.PassportID != "#")
             {
-                this.PassportID = passport.Substring(passport.IndexOf("pid:") + 4, 9);
+                try
+                {
+                    this.PassportID = passport.Substring(passport.IndexOf("pid:") + 4, 10);
+                }
+                catch (Exception)
+                {
+                    //Console.WriteLine("\nPassport ID search out of bounds!");
+                    this.PassportID = passport.Substring(passport.IndexOf("pid:") + 4, 9);
+                }
             }
-
-
-
         }
 
         //< import & transform data into a standardized format
@@ -45,7 +47,7 @@ namespace AoC._2020
         {
             string[] passports = System.IO.File.ReadAllText(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day04\Day04.Input.txt").
                                                 Split(new string[] { "\r\n\r\n" },
-                                                StringSplitOptions.RemoveEmptyEntries);           
+                                                StringSplitOptions.RemoveEmptyEntries);
             return passports;
         }
 
@@ -55,10 +57,7 @@ namespace AoC._2020
 
             foreach (string passport in passports)
             {
-                var passportLines = passport.Replace(' ', '\n'); //< might not need this
-                //Console.WriteLine($"\n{passportLines}");
-
-                if (IsValid(passportLines) && DetailsCheck(passportLines)) 
+                if (hasValidCriteria(passport) && DetailsCheck(passport)) 
                 {
                     passportCount++;
                 }
@@ -68,7 +67,7 @@ namespace AoC._2020
             return passportCount;
         }
 
-        public static bool IsValid(string passport) 
+        public static bool hasValidCriteria(string passport) 
         {
             string[] essentialCriteria = { "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid" };
             
@@ -87,7 +86,6 @@ namespace AoC._2020
         {
             PassportProcessing passport = new PassportProcessing(passportUnparsed);
 
-            //< create nested IF loop to optimiize processing time
             bool dateRequirements = (BirthYearCheck(passport.BirthYear) && IssueYearCheck(passport.IssueYear) && ExpirationYearCheck(passport.ExpirationYear));
             bool physicalTraits = (HeightCheck(passport.Height) && HairColourCheck(passport.HairColour) && EyeColourCheck(passport.EyeColour));
             bool originIDs = (PassportIDCheck(passport.PassportID));
@@ -98,14 +96,13 @@ namespace AoC._2020
                 {
                     if (originIDs) 
                     {
+                        Console.WriteLine(">> Passport valid <<\n");
                         return true;
                     }
                 }
             }
-            // return (dateRequirements && physicalTraits && originIDs);
 
-            return false;
-      
+            return false;    
         }
 
         public static bool BirthYearCheck(int birthYear) 
@@ -114,39 +111,36 @@ namespace AoC._2020
             {
                 if ((birthYear >= 1920) && (birthYear <= 2002)) 
                 {
-                    Console.WriteLine($"Birth year: {birthYear}");
                     return true;
                 }
             }
-            Console.WriteLine($"Birth year: {birthYear} - invalid");
+            Console.WriteLine($"Birth year: {birthYear} >> invalid <<");
 
             return false;        
         }
         public static bool IssueYearCheck(int issueYear)
         {
-            if (issueYear.ToString().Length != 4)
+            if (issueYear.ToString().Length == 4)
             {
                 if ((issueYear >= 2010) && (issueYear <= 2020))
                 {
-                    Console.WriteLine($"Issue year: {issueYear}");
                     return true;
                 }
             }
             
-            Console.WriteLine($"Birth year: {issueYear} - invalid");
+            Console.WriteLine($"Issued: {issueYear} - invalid");
             return false;
         }
         public static bool ExpirationYearCheck(int expYear)
         {
-            if (expYear.ToString().Length != 4)
+            if (expYear.ToString().Length == 4)
             {
                 if ((expYear >= 2020) && (expYear <= 2030))
                 {
-                    Console.WriteLine($"Birth year: {expYear}");
                     return true;
                 }
             }
-            Console.WriteLine($"Birth year: {expYear} - invalid");
+            Console.WriteLine($"Expiry: {expYear} >> invalid <<");
             return false;
 
         }
@@ -159,7 +153,6 @@ namespace AoC._2020
 
                 if ((Int32.Parse(height) >= 150) && (Int32.Parse(height) <= 193)) 
                 {
-                    Console.WriteLine($"Height: {height}cm");
                     return true;
                 }
 
@@ -171,26 +164,32 @@ namespace AoC._2020
 
                 if ((Int32.Parse(height) >= 59) && (Int32.Parse(height) <= 76))
                 {
-                    Console.WriteLine($"Height: {height}in");
                     return true;
                 }
 
             }
 
-            Console.WriteLine($"Height: {height} - invald");
+            Console.WriteLine($"Height: {height} >> invalid <<");
 
             return false;
         }
-        public static bool HairColourCheck(char[] hairColour)
+        public static bool HairColourCheck(string hairColourStr)
         {
+            char[] hairColour = hairColourStr.ToCharArray();
             char[] colourIndex = "0123456789abcdef".ToCharArray();
             int containsCount = 0;
 
-            for (int i = 0; i < hairColour.Length; i++) 
+            for (int i = 0; i < hairColour.Length + 1; i++) 
             {
-                if (hairColour[0].ToString() != "#")              
-                {                
+
+                if (hairColour[0].ToString() != "#")
+                {
                     return false;
+                }
+
+                if (i == 7 && containsCount == 6)
+                {
+                    return true;
                 }
 
                 if ((colourIndex).Contains(hairColour[i]))
@@ -198,15 +197,9 @@ namespace AoC._2020
                     containsCount++;
                 }
 
-                if (i == 7 && containsCount == 6) 
-                {
-                    Console.WriteLine($"Hair colour: {hairColour}");
-                    return true;
-                }
-
             }
 
-            Console.WriteLine($"Hair colour: {hairColour} - invalid");
+            Console.WriteLine($"Hair colour: {hairColourStr} >> invalid <<");
 
             return false;
         }
@@ -216,38 +209,27 @@ namespace AoC._2020
 
             if (validEyeColours.Contains(eyeColour)) 
             {
-                Console.WriteLine($"Eye colour: {eyeColour}");
                 return true;
             }
 
-            Console.WriteLine($"Eye colour: {eyeColour} - invalid");
+            Console.WriteLine($"Eye colour: {eyeColour} >> invalid <<");
 
             return false;
         }
         public static bool PassportIDCheck(string passportID)
         {
-            //if (passportID == "#")
-            //{
-            //    return false;
-            //}
-            //else 
-            
-            if (passportID.Length == 9 && Regex.IsMatch(passportID, @"^\d+$")) 
+            passportID = passportID = Regex.Replace(passportID, "[^0-9]+", string.Empty);
+
+            if (passportID.Length == 9) 
             {
-                Console.WriteLine($"Passport ID: {passportID}\n");
+                Console.WriteLine($"Passport ID: {passportID}");
                 return true;
             }
 
-            Console.WriteLine($"Passport ID: {passportID} - invalid \n");
+            Console.WriteLine($"Passport ID: {passportID} >> invalid <<");
 
             return false;
         }
-        //public static bool CountryIDCheck(int countryID)
-        //{
-        //    Console.WriteLine();
-
-        //    return true;
-        //}
 
     }
 }
