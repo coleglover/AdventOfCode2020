@@ -12,7 +12,6 @@ namespace AoC._2020
             //< Day 02
             //TobogganPassword.GetValidPasswords();
 
-
             //< Day 03 
             //TobogganTrajectory.GetSlopeProducts();
 
@@ -21,6 +20,8 @@ namespace AoC._2020
             Console.ReadLine();
             
             //< Day 05
+            
+            
         }
     }
 }
