@@ -86,15 +86,11 @@ namespace AoC._2020
         {
             PassportProcessing passport = new PassportProcessing(passportUnparsed);
 
-            bool dateRequirements = (BirthYearCheck(passport.BirthYear) && IssueYearCheck(passport.IssueYear) && ExpirationYearCheck(passport.ExpirationYear));
-            bool physicalTraits = (HeightCheck(passport.Height) && HairColourCheck(passport.HairColour) && EyeColourCheck(passport.EyeColour));
-            bool originIDs = (PassportIDCheck(passport.PassportID));
-
-            if (dateRequirements) 
+            if ((BirthYearCheck(passport.BirthYear)) && (IssueYearCheck(passport.IssueYear)) && (ExpirationYearCheck(passport.ExpirationYear))) 
             {
-                if (physicalTraits) 
+                if ((HeightCheck(passport.Height)) && (HairColourCheck(passport.HairColour)) && (EyeColourCheck(passport.EyeColour)))
                 {
-                    if (originIDs) 
+                    if (PassportIDCheck(passport.PassportID)) 
                     {
                         Console.WriteLine(">> Passport valid <<\n");
                         return true;
