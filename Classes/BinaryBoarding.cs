@@ -8,7 +8,7 @@ namespace AoC._2020
     {
         public static string[] ImportData()
         {
-            string[] seating = System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day05\Day05.Input.txt");
+            string[] seating = System.IO.File.ReadAllLines(@"#\AoC.2020\InputData\Day05\Day05.Input.txt");
 
             return seating;
 
