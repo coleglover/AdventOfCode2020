@@ -45,7 +45,7 @@ namespace AoC._2020
         //< import & transform data into a standardized format
         public static string[] ImportData()
         {
-            string[] passports = System.IO.File.ReadAllText(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day04\Day04.Input.txt").
+            string[] passports = System.IO.File.ReadAllText(@"#\AoC.2020\InputData\Day04\Day04.Input.txt").
                                                 Split(new string[] { "\r\n\r\n" },
                                                 StringSplitOptions.RemoveEmptyEntries);
             return passports;
