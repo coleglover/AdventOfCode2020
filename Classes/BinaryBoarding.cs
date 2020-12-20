@@ -9,9 +9,7 @@ namespace AoC._2020
     {
         public static string[] ImportData()
         {
-            return System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day05\Day05.Input.txt");           
-            //return System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day05\Day05.TestInput.txt"); 
-            //< should return: 357, 567, 119, 820, respectively
+            return System.IO.File.ReadAllLines(@"#\AoC.2020\InputData\Day05\Day05.Input.txt");           
         }
 
         public static List<int> FindSeatID(IEnumerable<string> boardingPasses) 
