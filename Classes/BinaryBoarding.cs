@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace AoC._2020
@@ -12,16 +11,45 @@ namespace AoC._2020
             return System.IO.File.ReadAllLines(@"#\AoC.2020\InputData\Day05\Day05.Input.txt");           
         }
 
-        public static List<int> FindSeatID(IEnumerable<string> boardingPasses) 
+        public static List<int> FindSeatID(string[] boardingPasses) 
         {
-            var seatID = boardingPasses.Select(coords => PartitionBoardingPass(coords));
-            
-            List<int> seatIDs = seatID.ToList();
+            var seatIDs = boardingPasses.Select(coords => PartitionBoardingPass(coords)).ToList();
+            seatIDs.Sort();;
 
+            //< Part 1:
             int maxSeatID = seatIDs.Max();
-            Console.WriteLine(maxSeatID);
+            //< Part 2: 
+            int missingSeatID = FindMissingSeat(seatIDs);
+
+            foreach(int ID in seatIDs) 
+            {
+                Console.WriteLine(ID);
+            }
+
+            Console.WriteLine($"\nMax SeatID: {maxSeatID}");
+            Console.WriteLine($"Missing SeatID: {missingSeatID}");
 
             return seatIDs;
+        }
+        
+        public static int FindMissingSeat(List<int> seatIDs)
+        {
+            int size = seatIDs.Count();
+
+            int a = 0, b = size - 1;
+            int mid = 0;
+
+            while ((b - a) > 1)
+            {
+                mid = (a + b) / 2;
+                if ((seatIDs[a] - a) != (seatIDs[mid] - mid))
+                    b = mid;
+                else if ((seatIDs[b] - b) != (seatIDs[mid] - mid))
+                    a = mid;
+            }
+
+            return (seatIDs[mid] - 1);
+           
         }
 
         public static int PartitionBoardingPass(string boardingPass) 
@@ -32,10 +60,9 @@ namespace AoC._2020
             var col = ParseColCoord(xDir);
             var row = ParseRowCoord(yDir);
 
-            Console.WriteLine($"{yDir} {xDir} => row: {row} column: {col} = seat ID: {(row * 8) + col}");
             return row * 8 + col;
-        }    
-
+        } 
+        
         public static int ParseColCoord(string xCoord)
         {
             double minBound = 0;
