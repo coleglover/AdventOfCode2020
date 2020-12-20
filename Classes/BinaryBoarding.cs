@@ -9,50 +9,75 @@ namespace AoC._2020
     {
         public static string[] ImportData()
         {
-            return System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day05\Day05.Input.txt");                                        
+            return System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day05\Day05.Input.txt");           
+            //return System.IO.File.ReadAllLines(@"C:\Users\Cole\source\repos\AoC.2020\InputData\Day05\Day05.TestInput.txt"); 
+            //< should return: 357, 567, 119, 820, respectively
         }
 
         public static List<int> FindSeatID(IEnumerable<string> boardingPasses) 
         {
-            //List<int> seatIDs = new List<int>();
-
             var seatID = boardingPasses.Select(coords => PartitionBoardingPass(coords));
-            //seatIDs.Add((seatID).ToList());
+            
             List<int> seatIDs = seatID.ToList();
 
-            foreach (int ID in seatIDs) 
-            {
-                Console.WriteLine(ID);
-                break;
-            }          
+            int maxSeatID = seatIDs.Max();
+            Console.WriteLine(maxSeatID);
 
             return seatIDs;
         }
 
         public static int PartitionBoardingPass(string boardingPass) 
         {
-            var xDir = boardingPass.Substring(0, 7);
-            var yDir = boardingPass.Substring(7);
+            var xDir = boardingPass[7..];
+            var yDir = boardingPass.Substring(0, 7);
 
-            Console.WriteLine($"{xDir} {yDir}");
+            var col = ParseColCoord(xDir);
+            var row = ParseRowCoord(yDir);
 
-            var row = ParseRowCoord(xDir);
-            var col = ParseColCoord(yDir);
+            Console.WriteLine($"{yDir} {xDir} => row: {row} column: {col} = seat ID: {(row * 8) + col}");
+            return row * 8 + col;
+        }    
 
-            //return row * col;
-
-            return 2 * 2;
-        }
-
-        public static int ParseRowCoord(string xCoord) 
-        { 
-
-        
-        }
-
-        public static int ParseColCoord(string yCoord)
+        public static int ParseColCoord(string xCoord)
         {
+            double minBound = 0;
+            double maxBound = 7;
 
+            for (int i = 1; i < xCoord.Length + 1; i++)
+            {
+                if (xCoord[i - 1].ToString() == "L")
+                {
+                    maxBound = maxBound - Math.Ceiling((minBound / Math.Pow(2, i)));
+                }
+
+                if (xCoord[i - 1].ToString() == "R")
+                {
+                    minBound = minBound + Math.Ceiling((maxBound / Math.Pow(2, i)));
+                }
+            }
+
+            return (int)minBound;
+        }
+
+        public static int ParseRowCoord(string yCoord)
+        {
+            double minBound = 0;
+            double maxBound = 128;
+
+            for (int i = 1; i < yCoord.Length + 1; i++)
+            {
+                if (yCoord[i - 1].ToString() == "F")
+                {
+                    maxBound = maxBound - Math.Ceiling((minBound / Math.Pow(2, i)));
+                }
+
+                if (yCoord[i - 1].ToString() == "B")
+                {
+                    minBound = minBound + Math.Ceiling((maxBound / Math.Pow(2, i)));
+                }
+            }
+
+            return (int)minBound;
         }
     }
 }
