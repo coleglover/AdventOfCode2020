@@ -21,35 +21,33 @@ namespace AoC._2020
             //< Part 2: 
             int missingSeatID = FindMissingSeat(seatIDs);
 
-            foreach(int ID in seatIDs) 
-            {
-                Console.WriteLine(ID);
-            }
-
             Console.WriteLine($"\nMax SeatID: {maxSeatID}");
             Console.WriteLine($"Missing SeatID: {missingSeatID}");
 
             return seatIDs;
         }
         
+        //< use iterative binary search to find the missing (empty) seat
         public static int FindMissingSeat(List<int> seatIDs)
         {
-            int size = seatIDs.Count();
 
-            int a = 0, b = size - 1;
+            int left = seatIDs[0], right = seatIDs.Count() - 1;
             int mid = 0;
 
-            while ((b - a) > 1)
+            while ((right - left) > 1)
             {
-                mid = (a + b) / 2;
-                if ((seatIDs[a] - a) != (seatIDs[mid] - mid))
-                    b = mid;
-                else if ((seatIDs[b] - b) != (seatIDs[mid] - mid))
-                    a = mid;
+                mid = (left + right) / 2;
+
+                if ((seatIDs[left] - left) != (seatIDs[mid] - mid))
+                    
+                    right = mid;
+                
+                else if((seatIDs[right] - right) != (seatIDs[mid] - mid))
+                    
+                    left = mid;
             }
 
-            return (seatIDs[mid] - 1);
-           
+            return (seatIDs[mid] + 1);          
         }
 
         public static int PartitionBoardingPass(string boardingPass) 
