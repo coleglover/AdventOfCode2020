@@ -19,7 +19,6 @@ namespace AoC._2020
         {
             int totalUniqueDeclarations = 0;
             int totalSharedDeclarations = 0;
-            //var sharedDeclarations = new Dictionary<string,int>();
 
             foreach(var groupEntry in customsForms) 
             {                             
