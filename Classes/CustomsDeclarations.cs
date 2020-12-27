@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
+
 
 namespace AoC._2020
 {
@@ -15,17 +17,56 @@ namespace AoC._2020
 
         public static int CountDeclarations(string[] customsForms) 
         {
-            int totalDeclarations = 0;
+            int totalUniqueDeclarations = 0;
+            int totalSharedDeclarations = 0;
+            //var sharedDeclarations = new Dictionary<string,int>();
 
-            foreach(var formEntry in customsForms) 
+            foreach(var groupEntry in customsForms) 
             {                             
-                var anyoneCount = formEntry.Replace("\r\n", "").Distinct().Count();                       
-                totalDeclarations += anyoneCount;           
+                //< Part 1:
+                var anyoneCount = groupEntry.Replace("\r\n", "").Distinct().Count();
+                totalUniqueDeclarations += anyoneCount;
+
+                //< converting group declaration forms from multiline to single line, then to string array
+                //< "[space]" is used to differentiate between group and !group entries
+                var declarations = groupEntry.Replace("\r\n", " ").ToCharArray().Select(value => value.ToString()).ToArray();
+                var groupDict = new Dictionary<string, int>();
+                int nMembers = 0;
+
+
+                //< Part 2: 
+                foreach (var claim in declarations)
+                {
+                    if (groupDict.ContainsKey(claim))
+                        groupDict[claim]++;
+                    else
+                        groupDict[claim] = 1;
+                }
+         
+                //< accounts for claims of groups with n = 1 members
+                if (!groupDict.ContainsKey(" ")) 
+                {
+                    totalSharedDeclarations += groupDict.Count();
+                }
+                //< accounts for claims of groups with n > 1 members
+                else if (groupDict[" "] > 0)
+                {
+                    //< storing n members in each group 
+                    nMembers = groupDict[" "] + 1;
+                    groupDict.Remove(" ");
+
+                    groupDict = groupDict.Where(claim => claim.Value == nMembers)
+                                                      .ToDictionary(claim => claim.Key, claim => claim.Value);
+
+                    totalSharedDeclarations += groupDict.Count();
+                }
+
+                var orderedDict = groupDict.OrderBy(claim => claim.Value).ToDictionary(claim => claim.Key, claim => claim.Value);
             }
 
-            Console.WriteLine(totalDeclarations);
+            Console.WriteLine($"\nTotal unique & shared customs declarations, respectively: {totalUniqueDeclarations} & {totalSharedDeclarations}");
 
-            return totalDeclarations;
+            return totalUniqueDeclarations;
         }
     }
 }
