@@ -56,15 +56,14 @@ namespace AoC._2020
 
                     groupDict = groupDict.Where(claim => claim.Value == nMembers)
                                                       .ToDictionary(claim => claim.Key, claim => claim.Value);
-
+                    
                     totalSharedDeclarations += groupDict.Count();
                 }
 
                 var orderedDict = groupDict.OrderBy(claim => claim.Value).ToDictionary(claim => claim.Key, claim => claim.Value);
             }
-
             Console.WriteLine($"\nTotal unique & shared customs declarations, respectively: {totalUniqueDeclarations} & {totalSharedDeclarations}");
-
+            
             return totalUniqueDeclarations;
         }
     }
