@@ -1,0 +1,4 @@
+﻿* please omit this text file * 
+
+Hello! I am testing git on my desktop. 
+
